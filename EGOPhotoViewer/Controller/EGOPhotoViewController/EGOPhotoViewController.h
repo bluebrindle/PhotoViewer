@@ -76,6 +76,7 @@
 @property(nonatomic,retain) NSMutableArray *photoViews;
 @property(nonatomic,retain) UIScrollView *scrollView;
 @property(nonatomic,assign) BOOL _fromPopover;
+@property(nonatomic,assign) BOOL allowsRotationGesture;
 
 - (NSInteger)currentPhotoIndex;
 - (void)moveToPhotoAtIndex:(NSInteger)index animated:(BOOL)animated;

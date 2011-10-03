@@ -47,6 +47,7 @@
 @synthesize photoSource=_photoSource; 
 @synthesize photoViews=_photoViews;
 @synthesize _fromPopover;
+@synthesize allowsRotationGesture;
 
 - (id)initWithPhoto:(id<EGOPhoto>)aPhoto {
 	return [self initWithPhotoSource:[[[EGOQuickPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:aPhoto,nil]] autorelease]];
@@ -843,6 +844,7 @@
 	if (photoView == nil || (NSNull*)photoView == [NSNull null]) {
 		
 		photoView = [[EGOPhotoImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.scrollView.bounds.size.width, self.scrollView.bounds.size.height)];
+        [photoView setAllowsRotationGesture:allowsRotationGesture];
 		[self.photoViews replaceObjectAtIndex:page withObject:photoView];
 		[photoView release];
 		

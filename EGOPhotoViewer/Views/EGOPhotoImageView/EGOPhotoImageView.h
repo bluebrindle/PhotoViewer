@@ -56,5 +56,7 @@
 - (void)prepareForReusue;
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation;
 - (CGSize)sizeForPopover;
+- (void)setAllowsRotationGesture:(BOOL)allow;
+- (BOOL)allowsRotationGesture;
 
 @end

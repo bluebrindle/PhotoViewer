@@ -48,6 +48,9 @@
 - (CABasicAnimation*)fadeAnimation;
 @end
 
+@interface EGOPhotoImageView ()
+@property (nonatomic, readonly) RotateGesture *gesture;
+@end
 
 @implementation EGOPhotoImageView 
 
@@ -55,9 +58,10 @@
 @synthesize imageView=_imageView;
 @synthesize scrollView=_scrollView;
 @synthesize loading=_loading;
+@synthesize gesture=_gesture;
 
 - (id)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
+    if ((self = [super initWithFrame:frame])) {
 		
 		self.backgroundColor = [UIColor blackColor];
 		self.userInteractionEnabled = NO;
@@ -87,10 +91,7 @@
 		_activityView = [activityView retain];
 		[activityView release];
 		
-		RotateGesture *gesture = [[RotateGesture alloc] initWithTarget:self action:@selector(rotate:)];
-		[self addGestureRecognizer:gesture];
-		[gesture release];
-		
+        [self setAllowsRotationGesture:YES];		
 	}
     return self;
 }
@@ -221,6 +222,7 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"EGOPhotoDidFinishLoading" object:[NSDictionary dictionaryWithObjectsAndKeys:self.photo, @"photo", [NSNumber numberWithBool:YES], @"failed", nil]];
 	
 }
+
 
 
 #pragma mark -
@@ -515,6 +517,24 @@
 #pragma mark -
 #pragma mark RotateGesture
 
+- (void)setAllowsRotationGesture:(BOOL)allow {
+    if (allow) {
+        if (!_gesture) {
+            _gesture = [[RotateGesture alloc] initWithTarget:self action:@selector(rotate:)];
+            [self addGestureRecognizer:_gesture];
+        }
+    } else {
+        if (_gesture) {
+            [self removeGestureRecognizer:_gesture];
+            [_gesture release]; _gesture=nil;
+        }
+    }
+}
+
+- (BOOL)allowsRotationGesture {
+    return (_gesture != nil);
+}
+
 - (void)rotate:(UIRotationGestureRecognizer*)gesture{
 
 	if (gesture.state == UIGestureRecognizerStateBegan) {
@@ -576,6 +596,7 @@
 	[_imageView release]; _imageView=nil;
 	[_scrollView release]; _scrollView=nil;
 	[_photo release]; _photo=nil;
+    [_gesture release]; _gesture=nil;
     [super dealloc];
 	
 }
